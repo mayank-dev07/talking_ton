@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Required for client-side rendering
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -48,15 +48,18 @@ export default function Home() {
   };
 
   const connectWallet = () => {
-    // Mock wallet connection
-    const mockWalletAddress = "0xABC123456789"; // Replace with actual wallet connection logic
-    setWallet(mockWalletAddress);
-
-    // Send wallet data back to Telegram bot
+    // Check if Telegram WebApp exists
     if (window.Telegram?.WebApp) {
-      window.Telegram.WebApp.sendData(
-        JSON.stringify({ wallet: mockWalletAddress })
-      );
+      const tg = window.Telegram.WebApp;
+
+      // Open Telegram wallet
+      tg.openWallet(); // Now TypeScript should recognize this method
+
+      // Set up a listener for when the wallet connection is made
+      tg.onEvent("wallet_address", (event: any) => {
+        const walletAddress = event.data.address; // Extract the wallet address from the event
+        setWallet(walletAddress); // Update the wallet state
+      });
     }
   };
 
