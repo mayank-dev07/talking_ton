@@ -1,12 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [country, setCountry] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [wallet, setWallet] = useState<string | null>(null); // Store wallet address
   const router = useRouter();
+
+  useEffect(() => {
+    // Initialize Telegram WebApp
+    if (
+      typeof window !== "undefined" &&
+      window.Telegram &&
+      window.Telegram.WebApp
+    ) {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+
+      // Optionally retrieve user data here
+      const user = tg.initDataUnsafe?.user;
+      console.log("User data: ", user);
+    }
+  }, []);
 
   const handleSelect = (selected: string) => {
     setLoading(true);
@@ -19,7 +36,7 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -30,8 +47,21 @@ export default function Home() {
     }
   };
 
+  const connectWallet = () => {
+    // Mock wallet connection
+    const mockWalletAddress = "0xABC123456789"; // Replace with actual wallet connection logic
+    setWallet(mockWalletAddress);
+
+    // Send wallet data back to Telegram bot
+    if (window.Telegram?.WebApp) {
+      window.Telegram.WebApp.sendData(
+        JSON.stringify({ wallet: mockWalletAddress })
+      );
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black relative">
       {loading && (
         <div className="flex min-h-screen w-screen items-center justify-center ">
           <svg
@@ -56,6 +86,20 @@ export default function Home() {
       {!loading && (
         <>
           <h1 className="text-3xl font-bold mb-6">Welcome to TalkingTOM</h1>
+
+          {/* Connect Wallet Button on Top Right */}
+          <div className="absolute top-4 right-4">
+            {!wallet ? (
+              <button
+                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
+                onClick={connectWallet}
+              >
+                Connect Wallet
+              </button>
+            ) : (
+              <span className="text-lg">Connected Wallet: {wallet}</span>
+            )}
+          </div>
 
           {!country && (
             <div className="flex space-x-4">
