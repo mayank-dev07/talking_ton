@@ -1,6 +1,7 @@
 "use client"; // Required for client-side rendering
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ConnectWallet from "@/components/ConnectWallet";
 
 export default function Home() {
   const [country, setCountry] = useState<string | null>(null);
@@ -92,16 +93,7 @@ export default function Home() {
 
           {/* Connect Wallet Button on Top Right */}
           <div className="absolute top-4 right-4">
-            {!wallet ? (
-              <button
-                className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300"
-                onClick={connectWallet}
-              >
-                Connect Wallet
-              </button>
-            ) : (
-              <span className="text-lg">Connected Wallet: {wallet}</span>
-            )}
+            <ConnectWallet />
           </div>
 
           {!country && (
