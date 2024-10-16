@@ -1,5 +1,5 @@
-import Main from "@/components/Main";
+import Login from "@/components/login";
 
-export default function Home() {
-  return <Main />;
+export default function App() {
+  return <Login />;
 }

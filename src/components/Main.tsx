@@ -1,8 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/zustand/zustand";
+import { GET } from "@/config/axios/requests";
 
 export default function Main() {
+  const [streak, setStreak] = useState<number | null>(null);
+  const [xp, setXp] = useState<number | null>(null);
+  const email = useUserStore((state) => state.email);
   const [country, setCountry] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -30,9 +35,24 @@ export default function Main() {
     }
   };
 
+  const xP = async () => {
+    try {
+      const { streak, xp } = await GET(`/login/${email}`);
+      setStreak(streak);
+      setXp(xp);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (email) xP();
+    console.log(email);
+  }, [email]);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black relative">
-      <div className="pb-32 text-6xl font-bold">XP</div>
+      <div className="pb-32 text-6xl font-bold">XP&nbsp;${xp}</div>
       {loading && (
         <div className="flex min-h-screen w-screen items-center justify-center ">
           <svg
