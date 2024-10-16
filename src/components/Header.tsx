@@ -60,20 +60,31 @@ const Header = (props: Props) => {
   };
 
   return (
-    <div className="fixed w-full top-0 right-0 flex justify-between items-center z-50 text-black p-8">
-      <h1>Talking Ton</h1>
+    <div className="fixed w-full top-0 right-0 flex justify-end items-center z-50 text-black p-8">
       {isLoading ? (
         <div>loading...</div>
       ) : (
         <>
           {tonWalletAddress ? (
             <>
-              <div>{formattedAddress(tonWalletAddress)}</div>
-              <button onClick={handleWalletAction}>Disconnect</button>
+              <div>
+                <div>{formattedAddress(tonWalletAddress)}</div>
+                <button
+                  onClick={handleWalletAction}
+                  className="bg-blue-600 rounded-md p-3 text-white font-semibold"
+                >
+                  Disconnect
+                </button>
+              </div>
             </>
           ) : (
             <>
-              <button onClick={handleWalletAction}>Connect Wallet</button>
+              <button
+                onClick={handleWalletAction}
+                className="bg-blue-600 rounded-md p-3 text-white font-semibold"
+              >
+                Connect Wallet
+              </button>
             </>
           )}
         </>

@@ -32,6 +32,7 @@ export default function Main() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black relative">
+      <div className="pb-32 text-6xl font-bold">XP</div>
       {loading && (
         <div className="flex min-h-screen w-screen items-center justify-center ">
           <svg
