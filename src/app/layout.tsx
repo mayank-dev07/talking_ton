@@ -1,7 +1,7 @@
 "use client";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import "./globals.css";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 
 export default function RootLayout({
   children,
@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={` antialiased`}>
         <TonConnectUIProvider manifestUrl="https://talking-ton.vercel.app/assets/tonconnect-manifest.json">
-          <Header />
+          {/* <Header /> */}
           {children}
         </TonConnectUIProvider>
       </body>
