@@ -96,12 +96,20 @@ const Header = (props: Props) => {
             </>
           ) : (
             <>
-              <button
-                className="px-4 py-2 rounded-md bg-blue-500 text-white"
-                onClick={handleWalletAction}
-              >
-                Connect Wallet
-              </button>
+              <div className="flex justify-center items-center gap-5">
+                <button
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  onClick={handleWalletAction}
+                >
+                  Connect Wallet
+                </button>
+                <button
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           )}
         </>
