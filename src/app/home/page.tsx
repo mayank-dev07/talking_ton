@@ -2,14 +2,15 @@
 import React, { useEffect } from "react";
 import Main from "@/components/Main";
 import Header from "@/components/Header";
-import { useUserStore } from "@/zustand/zustand";
+// import { useUserStore } from "@/zustand/zustand";
 import { useRouter } from "next/navigation";
 
 const Home = () => {
   const router = useRouter();
-  const email = useUserStore((state) => state.email);
+  // const email = useUserStore((state) => state.email);
   useEffect(() => {
-    if (email) console.log(email);
+    if (localStorage.getItem("email"))
+      console.log(localStorage.getItem("email"));
     else {
       router.push("/");
     }

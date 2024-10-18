@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/zustand/zustand";
+// import { useUserStore } from "@/zustand/zustand";
 import { POST } from "@/config/axios/requests";
 
 const FormSchema = z.object({
@@ -27,7 +27,9 @@ const FormSchema = z.object({
 });
 
 const Login = () => {
-  const { setEmail } = useUserStore();
+  // const email = useUserStore((state) => state.email);
+  const [email, setEmail] = React.useState("");
+  // const { setEmail } = useUserStore();
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -58,7 +60,7 @@ const Login = () => {
         console.log("Error:", error);
       }
 
-      setEmail(data?.user?.email);
+      localStorage.setItem("email", data?.user?.email);
       router.push("/home");
     } catch (error) {
       console.error("Error:", error);
@@ -67,7 +69,6 @@ const Login = () => {
     }
   };
 
-  const email = useUserStore((state) => state.email);
   React.useEffect(() => {
     if (!email) console.log(email);
     else {

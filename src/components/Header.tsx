@@ -1,5 +1,5 @@
 "use client";
-import { useUserStore } from "@/zustand/zustand";
+// import { useUserStore } from "@/zustand/zustand";
 import { Address } from "@ton/core";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import React, { useCallback, useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import React, { useCallback, useEffect, useState } from "react";
 type Props = {};
 
 const Header = (props: Props) => {
-  const { clearEmail } = useUserStore();
+  // const { clearEmail } = useUserStore();
   const [tonConnectedUI] = useTonConnectUI();
   const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +53,7 @@ const Header = (props: Props) => {
     if (tonConnectedUI.connected) {
       setIsLoading(true);
       await tonConnectedUI.disconnect();
-      clearEmail();
+      // clearEmail();
     } else {
       await tonConnectedUI.openModal();
     }

@@ -1,17 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/zustand/zustand";
+// import { useUserStore } from "@/zustand/zustand";
 import { GET } from "@/config/axios/requests";
 
 export default function Main() {
   const [streak, setStreak] = useState<number | null>(null);
   const [xp, setXp] = useState<number | null>(null);
-  const email = useUserStore((state) => state.email);
+  // const email = useUserStore((state) => state.email);
+  const [email, setEmail] = useState<string | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem("email")) {
+      console.log(localStorage.getItem("email"));
+      setEmail(localStorage.getItem("email"));
+    }
+  }, [email]);
 
   const handleSelect = (selected: string) => {
     setLoading(true);
@@ -47,10 +55,6 @@ export default function Main() {
 
   useEffect(() => {
     if (email) xP();
-    else {
-      router.push("/");
-    }
-    console.log(email);
   }, [email]);
 
   return (
