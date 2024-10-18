@@ -1,13 +1,13 @@
 "use client";
-// import { useUserStore } from "@/zustand/zustand";
 import { Address } from "@ton/core";
 import { useTonConnectUI } from "@tonconnect/ui-react";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
 type Props = {};
 
 const Header = (props: Props) => {
-  // const { clearEmail } = useUserStore();
+  const router = useRouter();
   const [tonConnectedUI] = useTonConnectUI();
   const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,7 +53,6 @@ const Header = (props: Props) => {
     if (tonConnectedUI.connected) {
       setIsLoading(true);
       await tonConnectedUI.disconnect();
-      // clearEmail();
     } else {
       await tonConnectedUI.openModal();
     }
@@ -62,6 +61,12 @@ const Header = (props: Props) => {
   const formattedAddress = (address: string) => {
     const tempAddress = Address.parse(address).toString();
     return `${tempAddress.slice(0, 6)}...${tempAddress.slice(-4)}`;
+  };
+
+  const logout = () => {
+    setTonWalletAddress(null);
+    localStorage.removeItem("email");
+    router.push("/");
   };
 
   return (
@@ -74,12 +79,20 @@ const Header = (props: Props) => {
           {tonWalletAddress ? (
             <>
               <div>{formattedAddress(tonWalletAddress)}</div>
-              <button
-                className="px-4 py-2 rounded-md bg-blue-500 text-white"
-                onClick={handleWalletAction}
-              >
-                Disconnect
-              </button>
+              <div className="flex gap-4 justify-center items-center">
+                <button
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  onClick={handleWalletAction}
+                >
+                  Disconnect
+                </button>
+                <button
+                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <>
