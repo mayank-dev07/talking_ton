@@ -50,9 +50,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ user: updatedUser }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { message: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: String(error) }, { status: 500 });
   }
 }
