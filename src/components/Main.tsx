@@ -47,6 +47,9 @@ export default function Main() {
 
   useEffect(() => {
     if (email) xP();
+    else {
+      router.push("/");
+    }
     console.log(email);
   }, [email]);
 
