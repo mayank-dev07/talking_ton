@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` antialiased`}>
-        <TonConnectUIProvider manifestUrl="https://talking-ton.vercel.app/assets/tonconnect-manifest.json">
+        <TonConnectUIProvider manifestUrl="https://talkington-git-main-mayanks-projects-fd3fa856.vercel.app/assets/tonconnect-manifest.json">
           {/* <Header /> */}
           {children}
         </TonConnectUIProvider>
