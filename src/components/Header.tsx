@@ -74,11 +74,21 @@ const Header = (props: Props) => {
           {tonWalletAddress ? (
             <>
               <div>{formattedAddress(tonWalletAddress)}</div>
-              <button onClick={handleWalletAction}>Disconnect</button>
+              <button
+                className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                onClick={handleWalletAction}
+              >
+                Disconnect
+              </button>
             </>
           ) : (
             <>
-              <button onClick={handleWalletAction}>Connect Wallet</button>
+              <button
+                className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                onClick={handleWalletAction}
+              >
+                Connect Wallet
+              </button>
             </>
           )}
         </>
