@@ -56,6 +56,13 @@ export async function POST(req: Request) {
           lastLogin: currentDate,
         },
       });
+    } else {
+      updatedUser = await db.user.update({
+        where: { email },
+        data: {
+          lastLogin: currentDate,
+        },
+      });
     }
 
     return NextResponse.json({ user: updatedUser }, { status: 200 });
