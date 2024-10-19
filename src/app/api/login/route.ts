@@ -33,16 +33,27 @@ export async function POST(req: Request) {
     });
 
     const lastLoginDate = new Date(user.lastLogin);
-    const daysDifference = Math.floor(
-      (currentDate.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const timeDifferenceInMs = currentDate.getTime() - lastLoginDate.getTime();
+    const hoursDifference = timeDifferenceInMs / (1000 * 60 * 60);
 
     let updatedUser = user;
-    if (daysDifference > 1) {
+
+    if (hoursDifference >= 24 && hoursDifference < 48) {
+      updatedUser = await db.user.update({
+        where: { email },
+        data: {
+          streaks: {
+            increment: 1,
+          },
+          lastLogin: currentDate,
+        },
+      });
+    } else if (hoursDifference >= 48) {
       updatedUser = await db.user.update({
         where: { email },
         data: {
           streaks: 1,
+          lastLogin: currentDate,
         },
       });
     }
