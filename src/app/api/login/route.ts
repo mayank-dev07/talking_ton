@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-// import { handleUserStreak } from "@/utils/dbutils";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -16,13 +15,11 @@ export async function POST(req: Request) {
   try {
     const currentDate = new Date();
 
+    // Fetch or create user
     const user = await db.user.upsert({
       where: { email },
       update: {
         lastLogin: currentDate,
-        streaks: {
-          increment: 1,
-        },
       },
       create: {
         email,
@@ -37,6 +34,7 @@ export async function POST(req: Request) {
     const hoursDifference = timeDifferenceInMs / (1000 * 60 * 60);
 
     let updatedUser = user;
+    console.log(hoursDifference);
 
     if (hoursDifference >= 24 && hoursDifference < 48) {
       updatedUser = await db.user.update({
@@ -53,13 +51,6 @@ export async function POST(req: Request) {
         where: { email },
         data: {
           streaks: 1,
-          lastLogin: currentDate,
-        },
-      });
-    } else {
-      updatedUser = await db.user.update({
-        where: { email },
-        data: {
           lastLogin: currentDate,
         },
       });
