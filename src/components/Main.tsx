@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-// import { useUserStore } from "@/zustand/zustand";
-import { GET } from "@/config/axios/requests";
 
-export default function Main() {
-  const [streak, setStreak] = useState<number | null>(null);
-  const [xp, setXp] = useState<number | null>(null);
-  // const email = useUserStore((state) => state.email);
+type Props = {
+  streak: number | null;
+  xp: number | null;
+};
+
+export default function Main({ streak, xp }: Props) {
   const [email, setEmail] = useState<string | null>(null);
   const [country, setCountry] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
@@ -16,7 +16,6 @@ export default function Main() {
 
   useEffect(() => {
     if (localStorage.getItem("email")) {
-      console.log(localStorage.getItem("email"));
       setEmail(localStorage.getItem("email"));
     }
   }, [email]);
@@ -42,20 +41,6 @@ export default function Main() {
       router.push("https://");
     }
   };
-
-  const xP = async () => {
-    try {
-      const { streak, xp } = await GET(`/login/${email}`);
-      setStreak(streak);
-      setXp(xp);
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (email) xP();
-  }, [email]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black relative">

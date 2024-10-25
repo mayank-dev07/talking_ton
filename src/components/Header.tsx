@@ -1,28 +1,92 @@
 "use client";
+import { POST } from "@/config/axios/requests";
 import { Address } from "@ton/core";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  email: string | null | undefined;
+  wallet: string | null;
+  fetch: (email: string) => Promise<void>;
+};
 
-const Header = (props: Props) => {
+const Header = ({ email, wallet, fetch }: Props) => {
   const router = useRouter();
   const [tonConnectedUI] = useTonConnectUI();
-  const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
+  const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(
+    wallet
+  );
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleWalletConnection = useCallback((address: string) => {
-    setTonWalletAddress(address);
-    console.log("wallet connected successfully");
-    setIsLoading(false);
-  }, []);
+  // Use the wallet prop directly to check the wallet address
+  useEffect(() => {
+    if (email && wallet && tonWalletAddress && wallet !== tonWalletAddress) {
+      // Clear the wallet if it does not match the user
+      console.log("Mismatched wallet detected. Prompting user to reconnect.");
+      setTonWalletAddress(null);
+    }
+  }, [email, wallet, tonWalletAddress]);
 
-  const handleWalletDisconnection = useCallback(() => {
-    setTonWalletAddress(null);
-    console.log("wallet connected successfully");
+  const setWalletAddress = async (email: string, address: string) => {
+    if (!email) {
+      console.error("Email is required but is undefined or null");
+      return;
+    }
+
+    try {
+      await POST("/update-wallet", {
+        email: email,
+        walletAddress: address,
+      });
+      console.log("Wallet address stored successfully");
+      fetch(email);
+    } catch (error) {
+      console.error("Error storing wallet address:", error);
+    }
+  };
+
+  const removeWalletAddress = async () => {
+    if (!email) {
+      console.error("Email is required but is undefined or null");
+      return;
+    }
+
+    try {
+      await POST("/update-wallet", {
+        email: email,
+        walletAddress: "",
+      });
+      console.log("Wallet address removed successfully");
+      fetch(email);
+    } catch (error) {
+      console.error("Error removing wallet address:", error);
+    }
+  };
+
+  const handleWalletConnection = (address: string) => {
+    if (wallet && wallet !== address) {
+      console.warn("Attempting to connect a different wallet.");
+      return;
+    }
+    console.log("Connected address:", address);
+    setTonWalletAddress(address);
+
+    if (email) {
+      try {
+        setWalletAddress(email, address);
+      } catch (error) {
+        console.error("Error storing wallet address:", error);
+      }
+    }
     setIsLoading(false);
-  }, []);
+  };
+
+  const handleWalletDisconnection = () => {
+    setTonWalletAddress(null);
+    removeWalletAddress();
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -45,11 +109,9 @@ const Header = (props: Props) => {
     return () => {
       unsubscribe();
     };
-  }, [tonConnectedUI, handleWalletConnection, handleWalletDisconnection]);
+  }, [tonConnectedUI, wallet]);
 
   const handleWalletAction = async () => {
-    console.log("test");
-
     if (tonConnectedUI.connected) {
       setIsLoading(true);
       await tonConnectedUI.disconnect();
@@ -73,7 +135,7 @@ const Header = (props: Props) => {
     <div className="fixed w-full top-0 right-0 flex justify-between items-center z-50 text-black p-8">
       <h1>Talking Ton</h1>
       {isLoading ? (
-        <div>loading...</div>
+        <div>Loading...</div>
       ) : (
         <>
           {tonWalletAddress ? (

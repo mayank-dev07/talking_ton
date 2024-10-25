@@ -14,8 +14,6 @@ export async function POST(req: Request) {
 
   try {
     const currentDate = new Date();
-
-    // Fetch or create user
     const user = await db.user.upsert({
       where: { email },
       update: {

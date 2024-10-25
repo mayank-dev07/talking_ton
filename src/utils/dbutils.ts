@@ -13,6 +13,7 @@ export async function getUserStreakAndXP(email: string) {
     const xp = user.streaks * 10;
 
     return {
+      ...user,
       streak: user.streaks,
       xp,
     };
@@ -21,13 +22,3 @@ export async function getUserStreakAndXP(email: string) {
     throw error;
   }
 }
-
-// export async function handleUserStreak(email: string) {
-//   try {
-//     const { streak, xp } = await getUserStreakAndXP(email);
-//     console.log(`User Streak: ${streak}, User XP: ${xp}`);
-
-//   } catch (error) {
-//     console.error("Error fetching user streak and XP:", error);
-//   }
-// }
