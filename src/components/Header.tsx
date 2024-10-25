@@ -78,7 +78,7 @@ const Header = (props: Props) => {
           {tonWalletAddress ? (
             <>
               <div>{formattedAddress(tonWalletAddress)}</div>
-              <div className="flex gap-4 justify-center items-center">
+              <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
                 <button
                   className="px-4 py-2 rounded-md bg-blue-500 text-white"
                   onClick={handleWalletAction}
