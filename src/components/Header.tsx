@@ -60,7 +60,7 @@ const Header = (props: Props) => {
 
   const formattedAddress = (address: string) => {
     const tempAddress = Address.parse(address).toString();
-    return `${tempAddress.slice(0, 6)}...${tempAddress.slice(-4)}`;
+    return `${tempAddress.slice(0, 12)}...${tempAddress.slice(-5)}`;
   };
 
   const logout = () => {
@@ -70,40 +70,42 @@ const Header = (props: Props) => {
   };
 
   return (
-    <div className="fixed w-full top-0 right-0 flex justify-between items-center z-50 text-black p-8">
+    <div className="fixed w-full top-0 right-0 flex justify-end items-center z-50 text-black p-8">
       {isLoading ? (
         <div>loading...</div>
       ) : (
         <>
           {tonWalletAddress ? (
             <>
-              <div>{formattedAddress(tonWalletAddress)}</div>
-              <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <button
-                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
-                  onClick={handleWalletAction}
-                >
-                  Disconnect
-                </button>
-                <button
-                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
-                  onClick={logout}
-                >
-                  Logout
-                </button>
+              <div className="w-full flex justify-between">
+                <div>{formattedAddress(tonWalletAddress)}</div>
+                <div className="flex flex-col md:flex-row gap-4 justify-end items-end">
+                  <button
+                    className="p-auto py-2 rounded-md bg-blue-500 text-white text-center w-[100px]"
+                    onClick={handleWalletAction}
+                  >
+                    Disconnect
+                  </button>
+                  <button
+                    className="p-auto py-2 rounded-md bg-blue-500 text-white text-center w-[100px]"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             </>
           ) : (
             <>
-              <div className="flex justify-center items-center gap-5">
+              <div className="flex flex-col md:flex-row justify-center items-center gap-5">
                 <button
-                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  className="p-auto py-2 rounded-md bg-blue-500 text-white text-center w-[100px]"
                   onClick={handleWalletAction}
                 >
-                  Connect Wallet
+                  Connect
                 </button>
                 <button
-                  className="px-4 py-2 rounded-md bg-blue-500 text-white"
+                  className="p-auto py-2 rounded-md bg-blue-500 text-white text-center w-[100px]"
                   onClick={logout}
                 >
                   Logout

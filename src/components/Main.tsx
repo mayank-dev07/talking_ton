@@ -61,7 +61,6 @@ export default function Main() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 text-black relative">
       {loading && (
         <>
-          <div className="pb-32 text-6xl font-bold">XP&nbsp;${xp}</div>
           <div className="flex min-h-screen w-screen items-center justify-center ">
             <svg
               aria-hidden="true"
@@ -85,6 +84,7 @@ export default function Main() {
 
       {!loading && (
         <>
+          <div className="mb-8 text-6xl font-bold">XP&nbsp;${xp}</div>
           <h1 className="text-3xl font-bold mb-6">Welcome to TalkingTOM</h1>
 
           {!country && (
